@@ -49,13 +49,6 @@ ENV DOTNET_RUNNING_IN_CONTAINER=true \
 # Trigger first run experience by running arbitrary cmd
 RUN dotnet help
 
-# Copy notebooks
-
-COPY . /data/JupyterNotebooks/
-
-# Setup volume for local running
-VOLUME /data/JupyterNotebooks/
-
 # Copy package sources
 
 COPY ./nuget.config ${HOME}/nuget.config
@@ -80,6 +73,18 @@ RUN dotnet interactive jupyter install
 
 # Enable telemetry once we install jupyter for the image
 ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
+
+# NOTE: EVERYTHING ABOVE THIS SHOULD BE PROVIDED BY A dotnet-interactive OFFICIAL IMAGE
+# THIS MEANS IN THE FUTURE, THE ABOVE WILL TURN INTO SIMPLY:
+# FROM dotnet/interactive:latest
+
+# INSTALL ANYTHING ELSE YOU WANT IN THIS CONTAINER HERE
+
+# Copy notebooks (So MyBinder will work)
+COPY . /data/JupyterNotebooks/
+
+# Setup volume (So you can run locally with mounted filesystem)
+VOLUME /data/JupyterNotebooks/
 
 # Set root to notebooks
 WORKDIR /data/JupyterNotebooks/
