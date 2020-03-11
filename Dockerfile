@@ -51,7 +51,10 @@ RUN dotnet help
 
 # Copy notebooks
 
-COPY ./notebooks/ ${HOME}/notebooks/
+COPY . /data/JupyterNotebooks/
+
+# Setup volume for local running
+VOLUME /data/JupyterNotebooks/
 
 # Copy package sources
 
@@ -79,4 +82,4 @@ RUN dotnet interactive jupyter install
 ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
 
 # Set root to notebooks
-WORKDIR ${HOME}/notebooks/
+WORKDIR /data/JupyterNotebooks/
